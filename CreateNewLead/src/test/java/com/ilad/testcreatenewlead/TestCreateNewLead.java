@@ -16,7 +16,7 @@ import com.ilad.createnewlead.SugarCRMLogin;
 
 @Listeners({com.ilad.testcreatenewlead.TestListener.class})
 public class TestCreateNewLead {
-	private WebDriver driver = DriverFactory.getDriver("Chrome");
+	private WebDriver driver = DriverFactory.getDriver(DriverFactory.DriverType.CHROME);
 	private SugarCRMLogin LoginPage;
 	private static final String username = "admin";
 	private static final String password = "admin";

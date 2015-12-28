@@ -1,5 +1,9 @@
 package com.ilad.testteamwork;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.Reporter;
@@ -8,6 +12,7 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import com.ilad.browser.DriverFactory;
+import com.ilad.propertyfiles.PropertyFile;
 import com.ilad.teamwork.AddTaskPage;
 import com.ilad.teamwork.LoginPage;
 import com.ilad.teamwork.NewTaskList;
@@ -17,16 +22,22 @@ import com.ilad.teamwork.TaskListOptions;
 import com.ilad.teamwork.TasksPage;
 
 public class TestAddTask {
-	private WebDriver driver = DriverFactory.getDriver("Firefox");
+	private WebDriver driver;
 	private LoginPage login;
-	private static final String username = "fake06";
-	private static final String password = "fake";
-	private final String taskListName = "Bloosy task list"
-			+ Long.toString(System.currentTimeMillis());
+	private static String username;
+	private static String password;
+	private static final PropertyFile properties = PropertyFile.getInstance();
 
 	@BeforeTest
-	public void setup() {
-		driver.get("https://topq.teamwork.com");
+	public void setup() throws FileNotFoundException, IOException {
+		if(!(new File("conf.properties")).exists()) {
+			createAndSetPropertiesFile();
+		}
+		driver = DriverFactory.getDriver("driver-key", "implicit-wait-time", DriverFactory.DriverType.FIREFOX);
+		String URL = properties.getProperty("url");
+		driver.get(URL);
+		username = properties.getProperty("username");
+		password = properties.getProperty("password");
 	}
 
 	@AfterTest
@@ -54,8 +65,8 @@ public class TestAddTask {
 		Reporter.log("<p>Adding a task list</p>");
 		this.sleep(2000);
 		NewTaskList newTaskModule = tasks.addTaskList();
-/*		final String taskListName = "Bloody task list"
-				+ Long.toString(System.currentTimeMillis());*/
+		final String taskListName = "Bloody task list"
+				+ Long.toString(System.currentTimeMillis());
 		newTaskModule.sendkeysTaskListName(taskListName);
 		tasks = newTaskModule.submitTaskList();
 
@@ -104,5 +115,15 @@ public class TestAddTask {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private void createAndSetPropertiesFile() throws IOException {
+		properties.setProperty("path-to-driver",
+				"/home/developer/Downloads/chromedriver", "The path to the chrome"
+						+ " driver");
+		properties.setProperty("implicit-wait-time", "10", null);
+		properties.setProperty("username", "fake06", null);
+		properties.setProperty("password", "fake", null);
+		properties.setProperty("url", "https://topq.teamwork.com", null);
 	}
 }
