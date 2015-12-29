@@ -7,6 +7,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Properties;
 
+import com.ilad.browser.BrowserPropertyConstants;
+
 /**
  * A properties file manager. This class is a singleton. The class is capable
  * of use in conditions requiring synchronization
@@ -54,20 +56,23 @@ public class PropertyFile {
 	
 	/**
 	 * Set a property in the file
-	 * @param key the name of the property
+	 * @param username the name of the property
 	 * @param value the value of the property
 	 * @param comment a comment for the property. If null in received, than no
 	 * comment is written
+	 * @return the value previously stored in the property. If there was no
+	 * value, null is returned
 	 * @throws IOException
 	 */
-	public void setProperty(String key, String value, String comment) throws IOException {
-		properties.setProperty(key, value);
+	public String setProperty(BrowserPropertyConstants key, String value, String comment) throws IOException {
+		String previousValue = (String) properties.setProperty(key.getPropertyValue(), value);
 
 		try (FileWriter writer = new FileWriter(m_fileName)) {
 			properties.store(writer, comment);
 		} catch (IOException e) {
 			throw e;
 		}
+		return previousValue;
 	}
 	
 	/**
@@ -78,16 +83,16 @@ public class PropertyFile {
 	 * @throws IOException 
 	 * @throws FileNotFoundException
 	 */
-	public String getProperty(String key) throws IOException, FileNotFoundException {
+	public String getProperty(BrowserPropertyConstants key) throws IOException, FileNotFoundException {
 		String property = null;
+		
 		if(!(new File("conf.properties")).exists()) {
 			throw new FileNotFoundException();
 		}
 
 		try (FileReader reader = new FileReader(m_fileName)) {
-			Properties properties = new Properties();
 			properties.load(reader);
-			property = properties.getProperty(key);
+			property = properties.getProperty(key.getPropertyValue());
 		} catch (IOException e) {
 			throw e;
 		}

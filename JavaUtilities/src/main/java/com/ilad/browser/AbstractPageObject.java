@@ -8,7 +8,13 @@ import org.openqa.selenium.WebDriver;
  * @since Dec 22 2015
  */
 public abstract class AbstractPageObject {
+	/**
+	 * A web driver instance
+	 */
 	protected WebDriver m_driver;
+	/**
+	 * An actionbot instance
+	 */
 	protected ActionBot actionbot;
 
 	/**
@@ -21,9 +27,17 @@ public abstract class AbstractPageObject {
 	}
 
 	/**
-	 * Close the page opened by the driver
+	 * Close the window. Quits the driver instance if it's the last window
+	 * currently open
 	 */
-	public void closePage() {
+	public void closeWindow() {
+		m_driver.close();
+	}
+	
+	/**
+	 * Closes all the windows and quit the the driver instance
+	 */
+	public void quit() {
 		actionbot.quit();
 	}
 }

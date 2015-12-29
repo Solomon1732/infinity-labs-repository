@@ -11,6 +11,7 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
+import com.ilad.browser.BrowserPropertyConstants;
 import com.ilad.browser.DriverFactory;
 import com.ilad.propertyfiles.PropertyFile;
 import com.ilad.teamwork.AddTaskPage;
@@ -33,16 +34,16 @@ public class TestAddTask {
 		if(!(new File("conf.properties")).exists()) {
 			createAndSetPropertiesFile();
 		}
-		driver = DriverFactory.getDriver("driver-key", "implicit-wait-time", DriverFactory.DriverType.FIREFOX);
-		String URL = properties.getProperty("url");
+		driver = DriverFactory.getDriver(DriverFactory.DriverType.FIREFOX);
+		final String URL = properties.getProperty(BrowserPropertyConstants.URL);
 		driver.get(URL);
-		username = properties.getProperty("username");
-		password = properties.getProperty("password");
+		username = properties.getProperty(BrowserPropertyConstants.USERNAME);
+		password = properties.getProperty(BrowserPropertyConstants.PASSWORD);
 	}
 
 	@AfterTest
 	public void quit() {
-		login.closePage();
+		login.quit();
 	}
 
 	@Test(description = "Tests a case of a failed login attempt")
@@ -118,12 +119,12 @@ public class TestAddTask {
 	}
 	
 	private void createAndSetPropertiesFile() throws IOException {
-		properties.setProperty("path-to-driver",
+		properties.setProperty(BrowserPropertyConstants.PATH_TO_DRIVER,
 				"/home/developer/Downloads/chromedriver", "The path to the chrome"
 						+ " driver");
-		properties.setProperty("implicit-wait-time", "10", null);
-		properties.setProperty("username", "fake06", null);
-		properties.setProperty("password", "fake", null);
-		properties.setProperty("url", "https://topq.teamwork.com", null);
+		properties.setProperty(BrowserPropertyConstants.IMPLICITE_WAITING_TIME,"10" ,null);
+		properties.setProperty(BrowserPropertyConstants.USERNAME, "fake06", null);
+		properties.setProperty(BrowserPropertyConstants.PASSWORD, "fake", null);
+		properties.setProperty(BrowserPropertyConstants.URL, "https://topq.teamwork.com", null);
 	}
 }

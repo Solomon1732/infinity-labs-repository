@@ -31,9 +31,7 @@ public class DriverFactory {
 	/**
 	 * Returns an instance of the requested WebDriver. Null in case of an
 	 * invalid name
-	 * @param pathToDriverPropertiesFileKeyName the path to the driver
-	 * @param defaultWaitingTimePropertiesFileKeyName the default waiting
-	 * implicit time
+	 * @param browser
 	 * @param browser the name of the requested driver
 	 * @return if the requested driver is valid, returns an instant of the
 	 * requested driver. If the requested driver is invalid, null is returned.
@@ -44,14 +42,11 @@ public class DriverFactory {
 	 * to the requested WebDriver (in case of ChromeDriver), and the default
 	 * waiting time for the implicit wait
 	 */
-	public static WebDriver getDriver(final String pathToDriverPropertiesFileKeyName,
-			final String defaultWaitingTimePropertiesFileKeyName, final DriverType browser)
+	public static WebDriver getDriver(final DriverType browser)
 					throws FileNotFoundException, IOException {
 		WebDriver driver = null;
 		PropertyFile properties = PropertyFile.getInstance();
-		String pathToDriver = PropertyFile.getInstance().getProperty("path-to-driver");
-		String waitingTime = properties.getProperty(defaultWaitingTimePropertiesFileKeyName);
-		long implicitWaitingTime = Long.parseLong(waitingTime);
+		String pathToDriver = PropertyFile.getInstance().getProperty(BrowserPropertyConstants.PATH_TO_DRIVER);
 
 		switch (browser) {
 		case CHROME:
@@ -68,6 +63,9 @@ public class DriverFactory {
 		default:
 			break;
 		}
+
+		String waitingTime = properties.getProperty(BrowserPropertyConstants.IMPLICITE_WAITING_TIME);
+		long implicitWaitingTime = Long.parseLong(waitingTime);
 
 		driver.manage().timeouts().implicitlyWait(implicitWaitingTime, TimeUnit.SECONDS);
 

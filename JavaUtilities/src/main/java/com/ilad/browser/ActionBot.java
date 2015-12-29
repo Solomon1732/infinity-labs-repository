@@ -1,9 +1,17 @@
 package com.ilad.browser;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import com.ilad.propertyfiles.PropertyFile;
 
 /**
  * An actionbot
@@ -12,6 +20,7 @@ import org.openqa.selenium.support.ui.Select;
  */
 public class ActionBot {
 	private final WebDriver m_driver;
+	private static final PropertyFile properties = PropertyFile.getInstance();
 
 	/**
 	 * A constructor for the actionbot
@@ -68,7 +77,7 @@ public class ActionBot {
 	public void selectByValue(By locator, String value) {
 		new Select(m_driver.findElement(locator)).selectByValue(value);
 	}
-	
+
 	/**
 	 * Used to locate and select an element in a page (for example, in a table
 	 * in the page)
@@ -79,7 +88,7 @@ public class ActionBot {
 	public void selectByVisibleText(By locator, String text) {
 		new Select(m_driver.findElement(locator)).selectByVisibleText(text);;
 	}
-	
+
 	/**
 	 * Type something into an input field. WebDriver doesn't normally clear these
 	 * before typing, so this method does that first.
@@ -108,5 +117,29 @@ public class ActionBot {
 	 */
 	public void quit() {
 		m_driver.quit();
+	}
+
+	/**
+	 * Sets an explicit waiting time
+	 * @param waitingTimeInMillis the waiting time in milliseconds
+	 * @param expectedCondition the expected condition with which the wait is set by
+	 * @throws FileNotFoundException if the properties file is not found
+	 * @throws IOException
+	 */
+	public void explicitWait(long waitingTimeInMillis, ExpectedCondition<Boolean> expectedCondition)
+			throws FileNotFoundException, IOException {
+		//Sets implicit wait at 0
+		m_driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
+
+		//The explicit waiting
+		(new WebDriverWait(m_driver, waitingTimeInMillis)).until(expectedCondition);
+		
+		//Sets the implicit wait back at the property time set in the properties file
+		String waitingTime = properties.getProperty(BrowserPropertyConstants
+				.IMPLICITE_WAITING_TIME);
+
+		m_driver.manage().timeouts().implicitlyWait(Long.parseLong(waitingTime),
+				TimeUnit.SECONDS);
+
 	}
 }
