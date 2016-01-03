@@ -14,9 +14,8 @@ public class AllActivityPage extends AbstractLoggedIn {
 	 * @return a TabsMenu object instant. Add a casting to TabsMenu
 	 */
 	@Override
-	public AbstractLoggedIn navigateUp() {
-		WebElement element = driver.findElementByAccessibilityId("Navigate up");
-		driver.tap(1, element, 100);
+	public TabsMenu navigateUp() {
+		driver.findElementByAccessibilityId("Navigate up").click();
 		return new TabsMenu(driver);
 	}
 }

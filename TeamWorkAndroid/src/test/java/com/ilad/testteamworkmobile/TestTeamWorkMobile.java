@@ -6,16 +6,23 @@ import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.testng.Assert;
+import org.testng.Reporter;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.ilad.teamwork.ActiveTaskListsPage;
+import com.ilad.teamwork.AddTaskList;
 import com.ilad.teamwork.AllActivityPage;
 import com.ilad.teamwork.AllProjectsPage;
+import com.ilad.teamwork.ConfirmTaskDeletion;
 import com.ilad.teamwork.LoginPage;
+import com.ilad.teamwork.NewTask;
 import com.ilad.teamwork.ProjectHomePage;
 import com.ilad.teamwork.TabsMenu;
+import com.ilad.teamwork.TaskListOptions;
+import com.ilad.teamwork.TaskList;
 
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.remote.MobileCapabilityType;
@@ -45,24 +52,89 @@ public class TestTeamWorkMobile {
 
 	@Test
 	public void testAddNewTaskList() {
+		Reporter.log("Logging in TeamWork app");
 		LoginPage login = new LoginPage(driver);
 		AllActivityPage allActivity = login.submitLogin(email, password);
-		
-		TabsMenu menu = (TabsMenu) allActivity.navigateUp();
+
+		Reporter.log("Navigating to task list");
+		TabsMenu menu = allActivity.navigateUp();
 		AllProjectsPage projects = menu.goToProjects();
 		ProjectHomePage webDriverProject = projects.selectProject("WebDriver Training");
 		ActiveTaskListsPage activeTaskLists = webDriverProject.goToTasks();
-		
+
+		Reporter.log("Creating a new task list");
 		final String taskListName = "CanOfWorms"
 				+ Long.toString(System.currentTimeMillis());
 		AddTaskList newTaskList = activeTaskLists.addTaskList(taskListName);
-		
+
+		Reporter.log("Adding a title to the task list");
 		newTaskList.addTitle(taskListName);
-		
-		final String taskListDescription = "I hate Smirfs!!";
+
+		Reporter.log("Adding a description to the task list");
+		final String taskListDescription = "I hate Smurfs!!";
 		newTaskList.addDescription(taskListDescription);
-		
+
+		Reporter.log("Saving the task list");
 		activeTaskLists = newTaskList.saveList();
+
+		Reporter.log("Selecting the newly created list");
+		TaskList taskList = activeTaskLists.selectTaskList(taskListName);
+
+		Reporter.log("Adding a first task");
+		TaskListOptions listOptions = taskList.listOptions();
+		NewTask newTask = listOptions.addTask();
+
+		Reporter.log("Adding a title to the task");
+		final String firstTaskTitle = "Just a task"
+				+ Long.toString(System.currentTimeMillis());
+		newTask.addTitle(firstTaskTitle);
+		
+		Reporter.log("Adding a description to the task");
+		final String firstTaskDescription = "Simple description for a simple task";
+		newTask.addDescription(firstTaskDescription);
+		
+		Reporter.log("Saving the first task");
+		taskList = newTask.save();
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
+		Reporter.log("Adding a second task");
+		listOptions = taskList.listOptions();
+		newTask = listOptions.addTask();
+
+		Reporter.log("Adding a title to the task");
+		final String secondTaskTitle = "Just another task"
+				+ Long.toString(System.currentTimeMillis());
+		newTask.addTitle(secondTaskTitle);
+		
+		Reporter.log("Adding a description to the task");
+		final String secondTaskDescription = firstTaskDescription;
+		newTask.addDescription(secondTaskDescription);
+		
+		Reporter.log("Saving the second task");
+		taskList = newTask.save();
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
+		Reporter.log("Asserting that both tasks exist");
+		Assert.assertTrue(taskList.isTaskExist(firstTaskTitle));
+		Assert.assertTrue(taskList.isTaskExist(secondTaskTitle));
+		
+		Reporter.log("Deleting task list");
+		listOptions = taskList.listOptions();
+		ConfirmTaskDeletion confirmDelete = listOptions.deleteTaskList();
+		activeTaskLists = confirmDelete.delete();
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@AfterMethod

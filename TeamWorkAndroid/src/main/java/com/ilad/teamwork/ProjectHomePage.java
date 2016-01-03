@@ -11,16 +11,15 @@ public class ProjectHomePage extends AbstractLoggedIn {
 	}
 
 	@Override
-	public AbstractLoggedIn navigateUp() {
+	public TabsMenu navigateUp() {
 		WebElement element = driver.findElementByAccessibilityId("Navigate up");
 		driver.tap(1, element, 100);
 		return new TabsMenu(driver);
 	}
 
 	public ActiveTaskListsPage goToTasks() {
-		WebElement element = driver.findElementByXPath("//android.widget.TextView"
-				+ "[@text='Tasks']/../descendant::android.widget.Button");
-		driver.tap(1, element, 100);
+		driver.findElementByXPath("//android.widget.TextView[@text='Tasks']"
+				+ "/../descendant::android.widget.Button").click();
 		return new ActiveTaskListsPage(driver);
 	}
 

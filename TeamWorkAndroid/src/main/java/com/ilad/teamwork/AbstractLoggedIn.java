@@ -11,7 +11,7 @@ public abstract class AbstractLoggedIn extends AbstractTeamWork {
 	}
 
 	/**
-	 * @return an AbstractLoggedIn instance
+	 * @return an AbstractTeamWork instance
 	 */
-	public abstract AbstractLoggedIn navigateUp();
+	public abstract AbstractTeamWork navigateUp();
 }

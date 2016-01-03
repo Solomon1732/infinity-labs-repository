@@ -1,5 +1,7 @@
 package com.ilad.androidphone;
 
+import java.util.concurrent.TimeUnit;
+
 import org.openqa.selenium.WebElement;
 
 import io.appium.java_client.android.AndroidDriver;
@@ -38,5 +40,31 @@ public abstract class AbstractAndroidPageObject {
 	protected void type(final WebElement element, final String textToType) {
 		element.clear();
 		element.sendKeys(textToType);
+	}
+	
+	/**
+	 * Type text into the specified element
+	 * @param element the element to be typed into
+	 * @param textToType the text to be typed
+	 * @param toClearBefore if true the element will be cleared before typing
+	 * (as in the method clear()). false indicates that the method will not be
+	 * cleared
+	 */
+	protected void type(final WebElement element, final String textToType,
+			boolean toClearBefore) {
+		if(toClearBefore) {
+			element.clear();
+		}
+		element.sendKeys(textToType);
+	}
+	
+	/**
+	 * Set an implicit waiting time
+	 * @param time the time for the implicit wait
+	 * @param unit the unit for the waiting time (seconds, nanoseconds, minutes,
+	 * etc.)
+	 */
+	protected void implicitwait(long time, TimeUnit unit) {
+		driver.manage().timeouts().implicitlyWait(time, unit);
 	}
 }

@@ -24,8 +24,7 @@ public class LoginPage extends AbstractTeamWork {
 	}
 	
 	public void tapLogin() {
-		WebElement element = driver.findElementByClassName("android.widget.Button");
-		driver.tap(1, element, 100);
+		driver.findElementByClassName("android.widget.Button").click();
 	}
 	
 	public AllActivityPage submitLogin(String email, String password) {

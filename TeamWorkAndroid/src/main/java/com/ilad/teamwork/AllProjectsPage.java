@@ -11,16 +11,15 @@ public class AllProjectsPage extends AbstractLoggedIn {
 	}
 	
 	public ProjectHomePage selectProject(String projectName) {
-		WebElement element = driver.findElementByXPath("//android.widget.TextView"
-				+ "[@text='" + projectName + "']");
-		driver.tap(1, element, 100);
+		driver.findElementByXPath("//android.widget.TextView"
+				+ "[@text='" + projectName + "']").click();
 		return new ProjectHomePage(driver);
 	}
 
 	@Override
-	public AbstractLoggedIn navigateUp() {
-		WebElement element = driver.findElementByAccessibilityId("Navigate up");
-		driver.tap(1, element, 100);
+	public TabsMenu navigateUp() {
+		/*WebElement element = */driver.findElementByAccessibilityId("Navigate up").click();
+//		driver.tap(1, element, 100);
 		return new TabsMenu(driver);
 	}
 }
