@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite guice-stage="DEVELOPMENT" name="Default suite"><!-- parallel="classes" thread-count="4"> -->
+	<parameter name="number_for_case_zero" value="10" />
+	<test verbose="2" name="Default test">
+		<classes>
+			<class name="com.ilad.testcalculator.TestCalculatorAdd">
+				<methods>
+					<include name="testAdd" />
+				</methods>
+			</class>
+			<class name="com.ilad.testcalculator.TestCalculatorSub">
+				<methods>
+					<include name="testSub1" />
+					<include name="testSub2" />
+					<include name="testSub3" />
+					<include name="testSub4" />
+				</methods>
+			</class>
+			<class name="com.ilad.testcalculator.TestCalculatorMul">
+				<methods>
+					<include name="testMul1" />
+					<include name="testMul2" />
+				</methods>
+			</class>
+			<class name="com.ilad.testcalculator.TestCalculatorDiv">
+				<methods>
+					<include name="testDiv" />
+				</methods>
+			</class>
+		</classes>
+	</test> <!-- Default test -->
+</suite> <!-- Default suite -->
