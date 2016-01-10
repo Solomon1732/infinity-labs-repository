@@ -6,12 +6,12 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Properties;
+//import java.util.concurrent.locks.ReentrantLock;
 
 import com.ilad.browser.BrowserPropertyConstants;
 
 /**
- * A properties file manager. This class is a singleton. The class is capable
- * of use in conditions requiring synchronization
+ * A properties file manager. This class is a singleton. The class thread-safe
  * @author Shlomi Reuveni
  * @since Dec 28 2015
  */
@@ -19,20 +19,28 @@ public class PropertyFile {
 	/**
 	 * A Properties instance to manage the file
 	 */
-	private static final Properties properties = new Properties();
+	private static final Properties PROPERTIES = new Properties();
 	/**
 	 * The default file name
 	 */
-	private static final  String m_fileName = "conf.properties";
+	private static final  String FILE_NAME = "conf.properties";
 	/**
-	 * A singleton instance of the class
+	 * A lock for the class methods
 	 */
-	private static PropertyFile instance;
-	/**
-	 * A synchronization mutex
-	 */
-	private static final Object mutex = new Object();
+//	private static final ReentrantLock LOCK = new ReentrantLock();
 
+	/**
+	 * An instance holder. Used for lazy initialization
+	 * @author Shlomi Reuveni
+	 * @since Jan 5 2016
+	 */
+	private static class InstanceHolder {
+		/**
+		 * A singleton instance of the class
+		 */
+		private static final PropertyFile INSTANCE = new PropertyFile();
+	}
+	
 	/**
 	 * An overwriting of the default class constructor
 	 */
@@ -43,15 +51,7 @@ public class PropertyFile {
 	 * @return a reference for an instance of the class
 	 */
 	public static PropertyFile getInstance() {
-		if(null == instance) {
-			synchronized (mutex) {
-				if(null == instance) {
-					instance = new PropertyFile();
-				}
-			}
-		}
-		
-		return instance;
+		return InstanceHolder.INSTANCE;
 	}
 	
 	/**
@@ -64,11 +64,13 @@ public class PropertyFile {
 	 * value, null is returned
 	 * @throws IOException
 	 */
-	public String setProperty(BrowserPropertyConstants key, String value, String comment) throws IOException {
-		String previousValue = (String) properties.setProperty(key.getPropertyValue(), value);
+	public String setProperty(BrowserPropertyConstants key, String value,
+			String comment) throws IOException {
 
-		try (FileWriter writer = new FileWriter(m_fileName)) {
-			properties.store(writer, comment);
+		String previousValue = (String) PROPERTIES.setProperty(key.getPropertyValue(), value);
+
+		try (FileWriter writer = new FileWriter(FILE_NAME)) {
+			PROPERTIES.store(writer, comment);
 		} catch (IOException e) {
 			throw e;
 		}
@@ -90,9 +92,9 @@ public class PropertyFile {
 			throw new FileNotFoundException();
 		}
 
-		try (FileReader reader = new FileReader(m_fileName)) {
-			properties.load(reader);
-			property = properties.getProperty(key.getPropertyValue());
+		try (FileReader reader = new FileReader(FILE_NAME)) {
+			PROPERTIES.load(reader);
+			property = PROPERTIES.getProperty(key.getPropertyValue());
 		} catch (IOException e) {
 			throw e;
 		}
