@@ -120,8 +120,7 @@ public class TestAddTask {
 	
 	private void createAndSetPropertiesFile() throws IOException {
 		properties.setProperty(BrowserPropertyConstants.PATH_TO_DRIVER,
-				"/home/developer/Downloads/chromedriver", "The path to the chrome"
-						+ " driver");
+				"/home/developer/Downloads/chromedriver", null);
 		properties.setProperty(BrowserPropertyConstants.IMPLICITE_WAITING_TIME,"10" ,null);
 		properties.setProperty(BrowserPropertyConstants.USERNAME, "fake06", null);
 		properties.setProperty(BrowserPropertyConstants.PASSWORD, "fake", null);

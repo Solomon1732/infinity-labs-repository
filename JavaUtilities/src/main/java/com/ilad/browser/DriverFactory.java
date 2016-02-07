@@ -46,22 +46,22 @@ public class DriverFactory {
 					throws FileNotFoundException, IOException {
 		WebDriver driver = null;
 		PropertyFile properties = PropertyFile.getInstance();
-		String pathToDriver = PropertyFile.getInstance().getProperty(BrowserPropertyConstants.PATH_TO_DRIVER);
+		String pathToDriver = properties.getProperty(BrowserPropertyConstants.PATH_TO_DRIVER);
 
 		switch (browser) {
-		case CHROME:
-			System.setProperty("webdriver.chrome.driver",
-					pathToDriver);
-			driver = new ChromeDriver();
-			break;
-		case FIREFOX:
-			driver = new FirefoxDriver();
-			break;
-		case HTMLUNIT:
-			driver = new HtmlUnitDriver();
-			break;
-		default:
-			break;
+			case CHROME:
+				System.setProperty("webdriver.chrome.driver",
+						pathToDriver);
+				driver = new ChromeDriver();
+				break;
+			case FIREFOX:
+				driver = new FirefoxDriver();
+				break;
+			case HTMLUNIT:
+				driver = new HtmlUnitDriver();
+				break;
+			default:
+				break;
 		}
 
 		String waitingTime = properties.getProperty(BrowserPropertyConstants.IMPLICITE_WAITING_TIME);

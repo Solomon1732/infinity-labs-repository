@@ -6,7 +6,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Properties;
-//import java.util.concurrent.locks.ReentrantLock;
 
 import com.ilad.browser.BrowserPropertyConstants;
 
@@ -24,10 +23,6 @@ public class PropertyFile {
 	 * The default file name
 	 */
 	private static final  String FILE_NAME = "conf.properties";
-	/**
-	 * A lock for the class methods
-	 */
-//	private static final ReentrantLock LOCK = new ReentrantLock();
 
 	/**
 	 * An instance holder. Used for lazy initialization
