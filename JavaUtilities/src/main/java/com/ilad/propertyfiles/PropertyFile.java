@@ -51,7 +51,6 @@ public class PropertyFile {
 	
 	/**
 	 * Set a property in the file
-	 * @param username the name of the property
 	 * @param value the value of the property
 	 * @param comment a comment for the property. If null in received, than no
 	 * comment is written
