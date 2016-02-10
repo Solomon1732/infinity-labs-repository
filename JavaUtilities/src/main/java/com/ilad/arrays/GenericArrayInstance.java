@@ -11,8 +11,8 @@ public class GenericArrayInstance {
 	
 	/**
 	 * Receives an array and allocates a new array with the same type and
-	 * length. the same as
-	 * <code>getArrayInstance(someArray, someArray.length)</code>
+	 * length. The same as
+	 * {@code getArrayInstance(someArray, someArray.length)}
 	 * @param array - The array that is used as the class for the new array.
 	 * @return - A newly allocated array with the same type as the input array.
 	 */
@@ -41,7 +41,7 @@ public class GenericArrayInstance {
 		Class<?> arrayClass = array.getClass().getComponentType();
 
 		@SuppressWarnings("unchecked")
-		E[] newArray = (E[]) Array.newInstance(arrayClass, array.length);
+		E[] newArray = (E[]) Array.newInstance(arrayClass, length);
 
 		return newArray;
 	}	
