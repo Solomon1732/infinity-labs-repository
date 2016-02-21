@@ -10,7 +10,8 @@ import java.util.Properties;
 import com.ilad.browser.BrowserPropertyConstants;
 
 /**
- * A properties file manager. This class is a singleton. The class thread-safe
+ * A properties file manager. This class is a singleton. The class is
+ * thread-safe
  * @author Shlomi Reuveni
  * @since Dec 28 2015
  */
