@@ -7,7 +7,15 @@ import org.openqa.selenium.WebElement;
 
 import io.appium.java_client.android.AndroidDriver;
 
+/**
+ * An {@code actionbot} for use with {@link AbstractAndroidPageObject}
+ * @author Shlomi Reuveni
+ *
+ */
 public class ActionBot {
+	/**
+	 * An {@link AndroidDriver} instance for the use of the class
+	 */
 	private final AndroidDriver<WebElement> driver;
 	
 	public ActionBot(AndroidDriver<WebElement> driver) {

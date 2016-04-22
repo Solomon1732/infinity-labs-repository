@@ -2,7 +2,7 @@ package com.ilad.androidphone;
 
 /**
  * @deprecated not fully developed
- * @author developer
+ * @author Shlomi Reuveni
  *
  */
 public enum LocatorType {
